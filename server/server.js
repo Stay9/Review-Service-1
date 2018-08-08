@@ -17,7 +17,7 @@ app.get('/api/listing/:listingid/overview', (req, res) => {
   const listing_id = Number(req.params.listingid);
   console.log(listing_id);
   let ratingsObj = {};
-  
+
 
   db.getRatings(listing_id, function(err, results) {
     if (err) {
@@ -32,7 +32,7 @@ app.get('/api/listing/:listingid/overview', (req, res) => {
     ratingsObj.location = Math.round((Math.random() * (4 - 1) + 1) * 2)/2;
     ratingsObj.check_in = Math.round((Math.random() * (4 - 1) + 1) * 2)/2;
     ratingsObj._value = Math.round((Math.random() * (4 - 1) + 1) * 2)/2;
-    ratingsObj.avg = Math.round(((ratingsObj.accuracy + ratingsObj.communication + ratingsObj.cleanliness + ratingsObj.location + ratingsObj.check_in + ratingsObj._value) / 6) * 2) /2; 
+    ratingsObj.avg = Math.round(((ratingsObj.accuracy + ratingsObj.communication + ratingsObj.cleanliness + ratingsObj.location + ratingsObj.check_in + ratingsObj._value) / 6) * 2) /2;
     // results.forEach(function(ratings) {
     //   ratingsObj.avg += ratings.accuracy;
     //   ratingsObj.accuracy += ratings.accuracy;
@@ -72,6 +72,76 @@ app.get('/api/listing/:listingid/reviews', (req, res) => {
     }
 
     res.status(200).json(results);
+  });
+});
+
+
+app.get('/api/listing/:listingid/reviews:reviewid', (req, res) => {
+  const review_id = Number(req.body.reviewid);
+  console.log(review_id);
+
+  //write function to get from database
+  db.getReview(review_id, function(err, results) {
+    if (err) {
+      console.log('err in server - reviews: ', err)
+      return;
+    }
+    res.status(201).json(results);
+  });
+});
+
+
+app.delete('/api/listing/:listingid/reviews:reviewid', (req, res) => {
+  const review_id = Number(req.body.reviewid);
+  console.log(review_id);
+
+  db.deleteReviews(review_id, function(err, results) {
+    if (err) {
+      console.log('err in server - reviews: ', err)
+      return;
+    }
+    res.status(200).json(results);
+  });
+});
+
+app.put('/api/listing/:listingid/reviews:reviewid', (req, res) => {
+  const review_id = Number(req.body.reviewid);
+  const field = String(req.body.field);
+  const value = String(req.body.value);
+  console.log(review_id);
+  db.updateReviews(review_id, field, value, function(err, results) {
+    if (err) {
+      console.log('err in server - reviews: ', err)
+      return;
+    }
+    res.status(200).json(results);
+  });
+});
+
+app.post('/api/listing/:listingid/reviews:reviewid', (req, res) => {
+  console.log(req.body, 'request');
+  const listing_id = Number(req.body.listingid);
+  const user_id = Number(req.body.userid);
+  const accuracy = Number(req.body.accuracy);
+  const communication = Number(req.body.communication);
+  const cleanliness = Number(req.body.cleanliness);
+  const location = Number(req.body.location);
+  const check_in = Number(req.body.check_in);
+  const value = Number(req.body.value);
+  const date = req.body.date;
+  const content = String(req.body.content);
+
+  console.log(listing_id);
+
+  db.postReviews(listing_id, user_id,
+    accuracy, communication,
+    cleanliness, location,
+    check_in, value, date, content, function(err, results) {
+    if (err) {
+      console.log('err in server - reviews: ', err)
+      return;
+    }
+    res.status(201).send();
   });
 });
 

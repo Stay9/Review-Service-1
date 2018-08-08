@@ -67,7 +67,7 @@ const getAWSPhotos = () => {
     var mid = Math.floor(urls.length/2);
     console.log(urls.slice(0, mid));
     console.log(urls.slice(mid));
-    
+
 
     // urls = urls.map(function(obj) {
     //   return obj["_text"];
@@ -466,7 +466,7 @@ const getUsers = () => {
     }
 
     return user_ids;
-} 
+}
 
 const insertReviews = () => {
   let qs;
@@ -496,7 +496,7 @@ const insertReviews = () => {
 
 const insertListings = () => {
     const listings = [];
-    let qs; 
+    let qs;
     for (let i = 0; i < 100; i++) {
         let listing = loremIpsum({units: 'sentences'});
         listings.push(listing);
@@ -516,6 +516,9 @@ const insertListings = () => {
 
 
 insertUsers();
+console.log('finished users');
 insertListings();
+console.log('listings');
 insertReviews();
+console.log('finished review');
 db.end();
