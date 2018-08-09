@@ -23,7 +23,7 @@ CREATE TABLE reviews (
   user_id int NOT NULL,
   accuracy DECIMAL(2,1) NOT NULL,
   communication DECIMAL(2,1) NOT NULL,
-  cleanliness DECIMAL(2,1) NOT NULL, 
+  cleanliness DECIMAL(2,1) NOT NULL,
   location DECIMAL(2,1) NOT NULL,
   check_in DECIMAL(2,1) NOT NULL,
   _value DECIMAL(2,1) NOT NULL,
