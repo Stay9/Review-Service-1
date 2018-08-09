@@ -56,3 +56,17 @@ To make DELETE requests to the server intended to delete a review given a review
 To make PUT requests to the server intended to update a review given a review id, a field and a value:
 
 `curl -H "Content-Type: application/json" -X PUT -d '{"reviewid":"176", "field":"accuracy", "value":"4.9"}' http://localhost:3002/api/listing/:listingid/reviews:reviewid`
+
+## Data generation
+
+Data generation was implemented using 3 scripts for each table ans using csv files.
+The approximate time to generate data for reviews (the largest file of above 10 million entries was 15 minutes).
+The bash command to look for the number of lines in a csv file is `cat reviews.csv  | wc -l`.
+reviews.csv file has 11,799,817 entries.
+users.csv file has 1,000,000 entries.
+listings.csv file has 1,000 entries.
+
+## Using postgres
+
+- The command for accesing postgres is `sudo su - postgres`.
+- The
