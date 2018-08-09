@@ -1,10 +1,7 @@
 
 const axios = require('axios');
-
 const download = require('image-downloader');
-
 const XMLParser = require('xml-js');
-
 const DateGen = require('random-date-generator');
 
 const loremIpsum = require('lorem-ipsum');
