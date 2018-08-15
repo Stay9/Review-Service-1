@@ -1,9 +1,11 @@
-const { Client } = require('pg')
-const client = new Client()
+var pg = require('pg');
+var conString = "postgres://postgres:Ricarofi1@localhost:5432/puppies";
 
-client.connect()
+var client = new pg.Client(conString);
+client.connect();
 
-client.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
-  console.log(err ? err.stack : res.rows[0].message) // Hello World!
+
+client.query('select * from reviews where id=1', (err, res) => {
+  console.log(err, res)
   client.end()
 })

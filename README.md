@@ -62,11 +62,60 @@ To make PUT requests to the server intended to update a review given a review id
 Data generation was implemented using 3 scripts for each table ans using csv files.
 The approximate time to generate data for reviews (the largest file of above 10 million entries was 15 minutes).
 The bash command to look for the number of lines in a csv file is `cat reviews.csv  | wc -l`.
-reviews.csv file has 11,799,817 entries.
-users.csv file has 1,000,000 entries.
-listings.csv file has 1,000 entries.
+reviews.csv file has 32,000,000 entries.
+users.csv file has 10,000,000 entries.
+listings.csv file has 10,000,000 entries.
 
 ## Using postgres
 
 - The command for accesing postgres is `sudo su - postgres`.
-- The
+- To create a new database type `createdb [NAME]`.
+- To get out of a database type `\q`.
+- To access a database type `psql -s [NAME]`.
+- To link to schema sql file: \i basics.sql
+
+`psql -h localhost -U ricardo -d puppies -c "\copy users FROM '/home/ricardo/Desktop/users.csv' with (format csv, delimiter ',');"`
+
+- to change users inside a database run `ALTER USER postgres PASSWORD 'newPassword';`, this is useful to change passwords.
+
+
+- To output to csv `COPY (SELECT name FROM users JOIN reviews ON (users.id = reviews.user_id)) TO '/home/ricardo/Desktop/reviews_by_listing4.csv' DELIMITER ',' CSV HEADER;`
+
+- To cut files columns and combine run `join -t, <(csvcut -c 1,3,4,5,6,7,8,9,10,11 reviews6.csv) <(csvcut -c 1 reviews_by_listing4.csv)`
+
+Change permissions of files
+`sudo chmod -R o+rw ./reviews_by_listing1.csv`
+
+COPY (select reviews.listing_id, reviews._date, users.name, reviews.accuracy, reviews.communication, reviews.cleanliness, reviews.location,reviews.check_in, reviews._value, reviews.content, reviews.is_reported FROM reviews, users WHERE reviews.user_id = users.id) to '/home/ricardo/Desktop/reviews_by_listing1.csv' DELIMITER ',' CSV HEADER;
+
+count number of lines in csv file with operating syste `cat reviews_by_listing1.csv | wc -l
+`
+
+## Using Cassandra
+
+- The command to start a cassandra service is `sudo service cassandra start`
+
+### Configuring Cassandra
+
+- Follow tutorial
+cd
+https://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/install/installTARdse.html#
+
+- to start Cassandra type bin/dse in directory `/Documents/Bootcamp/dse-5.1.10`.
+- to start the command line for cassandra type `bin/dse cassandra`.
+- to access cqlsh type `bin/cqlsh`
+- I had to refactor my files to switch columns using the command `awk 'BEGIN{FS=",";OFS=",";} {print $3,$1,$2}' foo.csv`
+
+- To escape double quotes in csv file use `awk -F, -v OFS="," '{gsub("\"","",$1)0gsub("\"","",$3);}1;' file.csv`, the $3 and $1 refer to the columns 3 and 1 respectively.
+
+-To change permission to write all 
+
+## Cassandra Schema
+
+Sourcing files:
+
+` SOURCE './myscript.cql'`
+
+Run stress tests:
+
+./bin/cassandra-stress user profile=puppies.yaml ops\(singlepost=1\)

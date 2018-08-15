@@ -1,0 +1,61 @@
+keyspace: stresscql
+
+keyspace_definition: |
+  CREATE KEYSPACE stresscql WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+#
+# Table info
+#
+table: reviews_by_listing
+
+table_definition: |
+  CREATE TABLE reviews_by_listing (
+    listing_id int,
+    date date,
+    user_name TEXT,
+    accuracy int,
+    communication int,
+    cleanliness int,
+    location int, 
+    check_in int,
+    value int,
+    content TEXT,
+    is_reported boolean,
+    PRIMARY KEY((listing_id), date, user_name))
+    WITH CLUSTERING ORDER BY (date DESC);
+
+columnspec:
+- name: listing_id
+  population: gaussian(1..10000000)
+- name: date
+  cluster: fixed(1000)
+- name: user_name
+  size: uniform(5..20)
+- name: accuracy
+  population: uniform(0..5)
+- name: communication
+  population: uniform(0..5)
+- name: cleanliness
+  population: uniform(0..5)
+- name: location
+  population: uniform(0..5)
+- name: check_in
+  population: uniform(0..5)
+- name: value
+  population: uniform(0..5)
+- name: content
+  size: gaussian(0..90)
+- name: is_reported
+  population: fixed(2)
+
+insert:
+  partitions: uniform(1..50)       # number of unique partitions to update in a single operation
+                                  # if batchcount > 1, multiple batches will be used but all partitions will
+                                  # occur in all batches (unless they finish early); only the row counts will vary
+  batchtype: LOGGED               # type of batch to use
+  select: uniform(1..10)/10       # uniform chance any single generated CQL row will be visited in a partition;
+                                  # generated for each partition independently, each time we visit it
+
+queries:
+   singlepost:
+      cql: select * from reviews_by_listing where listing_id = ? LIMIT 100
+      fields: samerow             # samerow or multirow (select arguments from the same row, or randomly from all rows in the partition)
