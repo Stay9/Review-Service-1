@@ -1,3 +1,4 @@
 user_images
 node_modules
 server/relicKey.js
+server/newrelic.js
