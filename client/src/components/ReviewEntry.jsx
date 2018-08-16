@@ -9,8 +9,8 @@ import utils from '../utils.js';
 
 
 const ReviewEntry = (props) => {
-  const date = utils.formatDate(props.review._date);
-
+  const date = utils.formatDate(props.review.date);
+  console.log(props.review);
   return (
     <div styleName='review-entry'>
       <div styleName='header-container'>
@@ -19,7 +19,7 @@ const ReviewEntry = (props) => {
         </div>
         <div styleName='review-info'>
           <div styleName='user-name'>
-            {props.review.name}
+            {props.review.user_name}
           </div>
           <div>
             <span styleName='review-date'>

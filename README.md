@@ -81,6 +81,9 @@ listings.csv file has 10,000,000 entries.
 
 - To output to csv `COPY (SELECT name FROM users JOIN reviews ON (users.id = reviews.user_id)) TO '/home/ricardo/Desktop/reviews_by_listing4.csv' DELIMITER ',' CSV HEADER;`
 
+`COPY (select reviews.listing_id, reviews._date, users.name, reviews.accuracy, reviews.communication, reviews.cleanliness, reviews.location,reviews.check_in, reviews._value, reviews.content, reviews.is_reported FROM reviews, users WHERE reviews.user_id = users.id) to '/home/ricardo/Desktop/reviews_by_listing1.csv' DELIMITER ',' CSV HEADER;`
+
+
 - To cut files columns and combine run `join -t, <(csvcut -c 1,3,4,5,6,7,8,9,10,11 reviews6.csv) <(csvcut -c 1 reviews_by_listing4.csv)`
 
 Change permissions of files
@@ -118,4 +121,11 @@ Sourcing files:
 
 Run stress tests:
 
-./bin/cassandra-stress user profile=puppies.yaml ops\(singlepost=1\)
+- `./bin/cassandra-stress user profile=puppies.yaml ops\(singlepost=1\)`
+- `./bin/cassandra-stress mixed ratio\(write=1,read=10\) n=100000 cl=ONE -pop dist=UNIFORM\(1..1000000\) -schema keyspace="puppies" -mode native cql3 -rate threads=16 -graph file=./graph_varying_read-write.html revision=write1-read1_8_10`
+- ./puppies.yaml is a configuration file to run simulation queries in a similar table in Cassandra.
+
+Relic
+
+https://rpm.newrelic.com/accounts/2069509/applications/setup#
+

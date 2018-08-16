@@ -17,10 +17,11 @@ CREATE TABLE listings(
 	PRIMARY KEY (name)
 );
 
-CREATE TABLE reviews_by_listing (
+CREATE TABLE reviews_by_listing3 (
 	listing_id int,
-	date date,
+	date timestamp,
 	user_name TEXT,
+	photo TEXT,
 	accuracy int,
 	communication int,
 	cleanliness int,
@@ -31,10 +32,11 @@ CREATE TABLE reviews_by_listing (
 	is_reported boolean,
 	PRIMARY KEY((listing_id), date, user_name)) WITH CLUSTERING ORDER BY (date DESC, user_name ASC);
 
-COPY reviews_by_listing (
+COPY reviews_by_listing3 (
 	listing_id,
 	date,
 	user_name,
+	photo,
 	accuracy,
 	communication,
 	cleanliness,
@@ -43,7 +45,7 @@ COPY reviews_by_listing (
 	value,
 	content,
 	is_reported
-	) FROM './../../../Desktop/reviews_by_listing1.csv' WITH HEADER = true;
+	) FROM './../../../Desktop/reviews_by_listing2.csv' WITH HEADER = false;
 
 COPY users (
 	id,

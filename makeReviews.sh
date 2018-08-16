@@ -4,5 +4,5 @@
 
 for i in {1..100}
 do
-   node newDataGeneratorReviews.js
+   node newDataGeneratorReviews1.js
 done

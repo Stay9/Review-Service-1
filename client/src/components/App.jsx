@@ -46,6 +46,7 @@ class App extends React.Component {
 
     axios.get(`http://localhost:3002/api/listing/${listing_id}/reviews`)
       .then(function(response) {
+        console.log(response.data, 'response.data');
         self.setState({allReviews: response.data});
       })
       .catch(function(err) {
