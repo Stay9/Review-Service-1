@@ -1,5 +1,22 @@
 config:
   target: 'http://localhost:3002'
   phases:
-    - duration: 60
-      arrivalRate: 200000
+    - duration: 120
+      arrivalRate: 1
+      rampTo: 100
+      name: "Warm up the application"
+    - duration: 1000
+      arrivalRate: 100
+      name: "Sustained max load"
+  payload:
+    path: "./listings_artillery.csv"
+    fields:
+      - "listing_id"
+scenarios:
+  - flow:
+    - loop:
+      - get:
+          url: "/api/listing/{{ listing_id }}/overview"
+      - get:
+          url: "/api/listing/{{ listing_id }}/reviews"
+      count: 200

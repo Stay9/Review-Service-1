@@ -129,3 +129,17 @@ Relic
 
 https://rpm.newrelic.com/accounts/2069509/applications/setup#
 
+- Command to start server requiring relic:
+`node server.js -require newrelic`
+
+- Command to start artillery:
+
+`artillery quick -n 100 -r 20 -d 120 http://localhost:3001;`
+
+Change consistency level for Cassandra
+
+ALTER KEYSPACE "puppies" WITH REPLICATION =
+  { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
+
+ ALTER TABLE reviews_by_listing3 WITH
+  compaction = { 'class' :  'LeveledCompactionStrategy'  }
