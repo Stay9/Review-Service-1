@@ -143,3 +143,8 @@ ALTER KEYSPACE "puppies" WITH REPLICATION =
 
  ALTER TABLE reviews_by_listing3 WITH
   compaction = { 'class' :  'LeveledCompactionStrategy'  }
+
+
+ How to install REDIS
+
+ https://askubuntu.com/questions/868848/how-to-install-redis-on-ubuntu-16-04

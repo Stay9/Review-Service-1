@@ -3,46 +3,54 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 var compression = require('compression')
-
+var redis = require('redis');
 // const db = require('../database/operations.js'); //for mysql
 const db = require('../database/configCassandra.js'); //for cassandra
 
+var client = redis.createClient();
+
+client.on('error', function(err){
+  console.log('Error' + err);
+});
 
 var cluster = require('cluster');  
 var numCPUs = require('os').cpus().length;
 
-
 if (cluster.isMaster) {  
-    for (var i = 0; i < numCPUs; i++) {
-        // Create a worker
-        cluster.fork();
-    }
+  for (var i = 0; i < numCPUs; i++) {
+    // Create a worker
+    cluster.fork();
+  }
 } 
 else {
     // Workers share the TCP connection in this server
-    var app = express();
-    app.use(compression());
+  var app = express();
+  app.use(compression());
 
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({extended: true}));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({extended: true}));
 
-    app.use(express.static(path.join(__dirname, '/../client/dist')));
+  app.use(express.static(path.join(__dirname, '/../client/dist')));
 
-    app.get('/api/listing/:listingid/overview', (req, res) => {
-      const listing_id = Number(req.params.listingid);
+  app.get('/api/listing/:listingid/overview', (req, res) => {
+
+    const listing_id = Number(req.params.listingid);
+    client.get(listing_id, function(error, result){
+    if(result){
+          res.send(result.rows);
+    }
+    else{
       let ratingsObj = {};
-
       db.getRatings(listing_id, function(results) {
-        var totalAccuracy = 0;
-        var totalCommunication = 0;
-        var totalCleanliness = 0;
-        var totalLocation = 0;
-        var totalCheck_In = 0;
-        var totalValue = 0;    
-        var total = 0;
-
-        var rows = results.rows;
-        for(var i=0; i<rows.length; i++){
+      var totalAccuracy = 0;
+      var totalCommunication = 0;
+      var totalCleanliness = 0;
+      var totalLocation = 0;
+      var totalCheck_In = 0;
+      var totalValue = 0;    
+      var total = 0;
+      var rows = results.rows;
+      for(var i=0; i<rows.length; i++){
         totalAccuracy = totalAccuracy + rows[i].accuracy;
         totalCommunication = totalCommunication+ rows[i].communication;
         totalCleanliness = totalCleanliness + rows[i].cleanliness;
@@ -53,7 +61,6 @@ else {
         + totalCleanliness + totalLocation + totalCheck_In
         + totalValue;
       }
-
       totalAccuracy = totalAccuracy/rows.length;
       totalCommunication = totalCommunication/rows.length;
       totalCleanliness = totalCleanliness/rows.length;
@@ -71,14 +78,27 @@ else {
       ratingsObj._value = totalValue;
       ratingsObj.avg = total/(rows.length*6);
 
+      client.setex(listing_id + 'o', 60, results);//pending
+      
       res.status(200).json(ratingsObj);
-    });
+
+      });    
+      }  
+    })
   });
 
   app.get('/api/listing/:listingid/reviews', (req, res) => {
     const listing_id = Number(req.params.listingid);
-    db.getReviewsByListingCass(listing_id, function(results) {
-      res.status(200).json(results.rows);
+    client.get(listing_id, function(error, result){
+      if(result){
+        res.send(result.rows);
+      }
+      else{
+        db.getReviewsByListingCass(listing_id, function(results) {
+        client.setex(listing_id, 60, results.rows);
+        res.status(200).json(results.rows);
+        });
+      }    
     });
   });
 
