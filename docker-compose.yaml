@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+
+  redis:
+      image: redis:4.0.5-alpine
+      container_name: cache
+      expose:
+      - 6379
+      command: ["redis-server", "--appendonly", "yes"]
+      hostname: redis
+      networks:
+        - redis-net
+      volumes:
+        - redis-data:/data
+
+  review-service:
+    build: ./
+    depends_on:
+      - redis
+    ports:
+      - 3002:3002
+    networks:
+      - redis-net
+    links:
+      - "redis"
+    restart: on-failure
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://cache
+
+
+networks:
+  redis-net:
+
+volumes:
+  redis-data:

@@ -148,3 +148,6 @@ ALTER KEYSPACE "puppies" WITH REPLICATION =
  How to install REDIS
 
  https://askubuntu.com/questions/868848/how-to-install-redis-on-ubuntu-16-04
+
+ Sending files over AWS 
+- `scp -i ./SDC.pem ./reviews_by_listing2.csv ubuntu@ec2-18-188-217-92.us-east-2.compute.amazonaws.com:~`
