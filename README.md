@@ -153,3 +153,27 @@ ALTER KEYSPACE "puppies" WITH REPLICATION =
 - `scp -i ./SDC.pem ./reviews_by_listing2.csv ubuntu@ec2-18-219-66-176.us-east-2.compute.amazonaws.com:~`
 
 It is important to change the address of the http requests to the EC2 instances in the client App component
+
+Instructions to set instance in ec2 from Github
+1. Change IP adress of configCassandra file to IP address of Cassandra instance.
+2. Change 'localhost' to `<public IP address>` of instance
+3. Install github in instance
+	- `sudo apt-get update`
+	- `sudo apt-get install git`
+4. Clone repo.
+	`https://github.com/Stay9/Review-Service-1.git`
+5. Send newRelic.js file and put it in server folder
+	`scp -i ./SDC.pem ./newrelic.js ubuntu@ec2-18-219-66-176.us-east-2.compute.amazonaws.com:~`
+6. Install redis and start server.
+	`wget http://download.redis.io/redis-stable.tar.gz`
+	`tar xvzf redis-stable.tar.gz`
+	`cd redis-stable`
+	`make`
+	`sudo cp src/redis-server /usr/local/bin/`
+	`sudo cp src/redis-cli /usr/local/bin/`
+	`redis-server`
+7. sudo apt install npm 
+8. npm install
+9. npm run build
+10. npm run start
+
