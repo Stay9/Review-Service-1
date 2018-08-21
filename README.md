@@ -150,4 +150,6 @@ ALTER KEYSPACE "puppies" WITH REPLICATION =
  https://askubuntu.com/questions/868848/how-to-install-redis-on-ubuntu-16-04
 
  Sending files over AWS 
-- `scp -i ./SDC.pem ./reviews_by_listing2.csv ubuntu@ec2-18-188-217-92.us-east-2.compute.amazonaws.com:~`
+- `scp -i ./SDC.pem ./reviews_by_listing2.csv ubuntu@ec2-18-219-66-176.us-east-2.compute.amazonaws.com:~`
+
+It is important to change the address of the http requests to the EC2 instances in the client App component

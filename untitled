@@ -1,0 +1,4 @@
+
+
+curl --user rfigueror_155067:Ricarofi1 -L \
+https://downloads.datastax.com/enterprise/dse-5.1.10-bin.tar.gz | tar xz

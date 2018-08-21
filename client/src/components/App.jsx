@@ -44,7 +44,7 @@ class App extends React.Component {
     var listing_id = this.state.listing_id;
     var self = this;
 
-    axios.get(`http://localhost:3002/api/listing/${listing_id}/reviews`)
+    axios.get(`http://13.59.79.172:3002/api/listing/${listing_id}/reviews`)
       .then(function(response) {
         console.log(response.data, 'response.data');
         self.setState({allReviews: response.data});
@@ -58,7 +58,7 @@ class App extends React.Component {
     var listing_id = this.state.listing_id;
     var self = this;
 
-    axios.get(`http://localhost:3002/api/listing/${listing_id}/overview`)
+    axios.get(`http://13.59.79.172:3002/api/listing/${listing_id}/overview`)
       .then(function(response) {
         self.setState({ratings: response.data});
       })

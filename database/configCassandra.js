@@ -1,6 +1,6 @@
 const cassandra = require('cassandra-driver');
 const client = new cassandra.Client({
-  contactPoints: ['localhost'],
+  contactPoints: ['18.219.66.176'], //public ip address of Cassandra instance
   keyspace:'puppies'
 });
 
