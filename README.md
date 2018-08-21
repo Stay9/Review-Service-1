@@ -171,9 +171,15 @@ Instructions to set instance in ec2 from Github
 	`make`
 	`sudo cp src/redis-server /usr/local/bin/`
 	`sudo cp src/redis-cli /usr/local/bin/`
-	`redis-server`
-7. sudo apt install npm 
-8. npm install
-9. npm run build
-10. npm run start
+	start redis in background `redis-server --daemonize yes`
+7. Install nginxs.
+	- `sudo apt-get update`
+	-  `sudo apt-get install nginx`
+8. Install node
+	- `curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -` //me quede aqui
+	- `sudo apt-get install -y nodejs`
+9. sudo apt install npm 
+10. npm install
+11. npm run build
+12. npm run start
 
