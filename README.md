@@ -181,7 +181,26 @@ Instructions to set instance in ec2 from Github
 9. sudo apt install npm 
 10. `node Reviews/server server.js &`
 
+
+## Other
+
+- How to kill node:
+ - `ps aux | grep node`
+ - `kill -9 <PID>`
+
 Tools used
 
 - newRelic
 - Loader IO
+
+In order to scale the application the following was added to the running instance in order to guarantee that the server will run at start up - reboot
+
+`  GNU nano 2.5.3             File: executeApp.sh                                
+#!/bin/bash
+
+echo "Hello World!"
+
+redis-server --daemonize yes
+node ~/Review-Service-1/server/server.js &
+`
+- edit crontab file `crontab -e` with the following line `@reboot  /path_to_you_file/your_file`
