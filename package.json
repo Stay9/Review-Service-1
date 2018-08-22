@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest --coverage",
     "build": "webpack -d --watch",
-    "start": "nodemon ./server/server.js"
+    "start": "nodemon ./server/server.js --watch"
   },
   "dependencies": {
     "artillery": "^1.6.0-22",

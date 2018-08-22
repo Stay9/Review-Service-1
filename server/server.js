@@ -7,7 +7,7 @@ var redis = require('redis');
 // const db = require('../database/operations.js'); //for mysql
 const db = require('../database/configCassandra.js'); //for cassandra
 
-client = redis.createClient(process.env.REDIS_URL);
+client = redis.createClient();
 console.log(process.env.REDIS_URL);
 
 client.on('error', function(err){

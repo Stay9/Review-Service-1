@@ -179,7 +179,9 @@ Instructions to set instance in ec2 from Github
 	- `curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -` //me quede aqui
 	- `sudo apt-get install -y nodejs`
 9. sudo apt install npm 
-10. npm install
-11. npm run build
-12. npm run start
+10. `node Reviews/server server.js &`
 
+Tools used
+
+- newRelic
+- Loader IO
